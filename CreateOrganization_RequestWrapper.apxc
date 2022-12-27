@@ -1,0 +1,17 @@
+public class CreateOrganization_RequestWrapper {
+    public Body Body=new Body();
+	public class Body {
+		public InputParameters InputParameters =new InputParameters();
+	}
+
+	public class InputParameters {
+		public P_ORGANIZATION_REC P_ORGANIZATION_REC = new P_ORGANIZATION_REC();
+	}
+
+	public class P_ORGANIZATION_REC {
+		public String ORGANIZATION_NAME;	    //Krios Info Pune
+		public String CREATED_BY_MODULE;	    //TCA_V2_API
+		//public String PARTY_REC;	    //
+	}
+
+}

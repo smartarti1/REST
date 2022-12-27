@@ -1,0 +1,48 @@
+public class CreateOrganization {
+    public static void accountCreation(){
+        Map<String,String> headerMap = new Map<String,String>();
+            
+                Blob headerValue = Blob.valueOf('u.chetana' + ':' + 'adj@1234');
+            	String authorizationHeader = 'Basic ' +'dS5jaGV0YW5hOmFkakAxMjM0';//EncodingUtil.base64Encode(headerValue);
+        		headerMap.put('Authorization',authorizationHeader);
+                headerMap.put('ContentLanguage','en-US');
+                headerMap.put('Content-Type','application/json');
+        		headerMap.put('Username','u.chetana');
+        		headerMap.put('Password','adj@1234');
+        
+            CreateOrganization_RequestWrapper ReqWrap = new CreateOrganization_RequestWrapper();
+        	ReqWrap.Body.InputParameters.P_ORGANIZATION_REC.ORGANIZATION_NAME='Demo Krios';
+        	ReqWrap.Body.InputParameters.P_ORGANIZATION_REC.CREATED_BY_MODULE='TCA_V2_API';
+        	//ReqWrap.Body.InputParameters.P_ORGANIZATION_REC.PARTY_REC='';
+        	String jsonRequest = Json.serialize(ReqWrap);
+        HTTP http = new HTTP();
+        HTTPRequest httpReq = new HTTPRequest();
+        httpReq.setClientCertificateName('service_call_out'); //Self Certificate Added for Serive callout
+        HTTPResponse httpRes;
+        httpReq.setEndPoint('https://tbmapps.transasia.co.in:4443/webservices/rest/PARTY/create_organization/');
+        httpReq.setMethod('POST');
+        for(String headerKey : headerMap.keySet()){
+            httpReq.setHeader(headerKey, headerMap.get(headerKey));
+        }
+        httpReq.setBody(jsonRequest);
+        httpReq.setTimeOut(120000);
+        system.debug('Request Body ::'+jsonRequest);
+        try
+        {
+            httpRes = http.send(httpReq);
+            system.debug('@@@@in utility' + httpRes );
+            System.debug('SatatusCode:-'+httpRes.getStatus());
+            System.debug('SatatusCode:-'+httpRes.getStatusCode());
+            system.debug('HTTP RESPONSE ::'+httpRes.getBody());
+            
+        }
+        catch(Exception ex)
+        {   
+          
+            system.debug('Response Msg '+ex);
+            system.debug('REST Error'+ex.getLineNumber());
+            //LogUtility.createLogs('Error', 'Error', 'Apex Class', 'URL : '+endPointURL, ex.getStackTraceString(), ex.getMessage(), '', true);
+        }
+    }
+
+}
